@@ -1,6 +1,6 @@
 import 'package:atividade4/shared/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
-import 'controllers/login_controller.dart';
+import 'auth_controller.dart';
 import 'widgets/login_text_form_field.dart';
 import '../../shared/utils/validators.dart';
 import '../../shared/constants/constants.dart'; // Certifique-se de importar para acessar AppColors
@@ -13,12 +13,26 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final controller = LoginController();
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   void dispose() {
-    controller.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
     super.dispose();
+  }
+
+  void _login() {
+    if (_formKey.currentState?.validate() ?? false) {
+      AuthController authController = AuthController();
+      authController.loginUser(
+        context,
+        _emailController.text,
+        _passwordController.text,
+      );
+    }
   }
 
   @override
@@ -42,46 +56,35 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 32, bottom: 8),
-            child: Text(
-              'Dica: login teste@exemplo.com | senha 123456',
-              style: TextStyle(color: Colors.grey[700], fontSize: 14),
-              textAlign: TextAlign.center,
-            ),
-          ),
           Expanded(child: SizedBox(height: double.infinity)),
           Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 32),
               child: Form(
-                key: controller.formKey,
+                key: _formKey,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     LoginTextFormField(
-                      controller: controller.emailController,
+                      controller: _emailController,
                       hintText: 'E-mail',
                       icon: Icons.email,
                       validator: Validators.email,
                     ),
                     const SizedBox(height: 16),
                     LoginTextFormField(
-                      controller: controller.passwordController,
+                      controller: _passwordController,
                       hintText: 'Senha',
                       icon: Icons.lock,
                       obscureText: true,
                       validator: Validators.password,
                     ),
                     const SizedBox(height: 24),
-                    CustomButton(
-                      onPressed: () => controller.login(context),
-                      text: 'Entrar',
-                    ),
+                    CustomButton(onPressed: () => _login(), text: 'Entrar'),
                     const SizedBox(height: 12),
                     TextButton(
                       onPressed: () {
-                        // TODO: ação de registro
+                        Navigator.pushReplacementNamed(context, '/register');
                       },
                       child: const Text('Registrar-se'),
                     ),

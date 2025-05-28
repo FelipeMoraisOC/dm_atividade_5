@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../../../shared/constants/constants.dart';
 
 class LoginTextFormField extends StatefulWidget {
@@ -11,6 +12,7 @@ class LoginTextFormField extends StatefulWidget {
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
   final void Function(String)? onChanged;
+  final List<TextInputFormatter>? inputFormatters;
 
   const LoginTextFormField({
     Key? key,
@@ -23,6 +25,7 @@ class LoginTextFormField extends StatefulWidget {
     this.keyboardType,
     this.textInputAction,
     this.onChanged,
+    this.inputFormatters,
   }) : super(key: key);
 
   @override
@@ -81,7 +84,7 @@ class _LoginTextFormFieldState extends State<LoginTextFormField> {
           autocorrect: false,
           enableSuggestions: false,
           onChanged: widget.onChanged,
-
+          inputFormatters: widget.inputFormatters,
           decoration: InputDecoration(
             icon: Container(child: Icon(widget.icon, color: AppColors.primary)),
             hintText: widget.hintText,

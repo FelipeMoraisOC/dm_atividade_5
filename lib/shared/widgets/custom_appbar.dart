@@ -13,6 +13,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     final isDark = themeProvider.isDarkMode;
 
     return AppBar(
+      leading: Builder(
+        builder:
+            (context) => IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () => Scaffold.of(context).openDrawer(),
+            ),
+      ),
       title: Text(
         'Atividade 4',
         style: Theme.of(context).textTheme.headlineSmall?.copyWith(
