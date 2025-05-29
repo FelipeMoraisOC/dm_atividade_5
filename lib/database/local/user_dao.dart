@@ -34,6 +34,24 @@ class UserDao {
     await db.delete(_tableName);
   }
 
+  static Future<bool> updateUserPassword(String email, String newPassword) async {
+    try {
+      final db = await _getDatabase();
+      final encryptedPassword = Encrypt.encryptPassword(newPassword);
+      
+      final result = await db.update(
+        _tableName,
+        {'password': encryptedPassword},
+        where: 'email = ?',
+        whereArgs: [email],
+      );
+      
+      return result > 0; // Retorna true se pelo menos uma linha foi atualizada
+    } catch (e) {
+      return false;
+    }
+  }
+
   static Future<UserModel> insertUser(UserModel user) async {
     final db = await _getDatabase();
     final userMap = user.toMap();

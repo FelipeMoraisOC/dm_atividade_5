@@ -4,6 +4,7 @@ import 'package:atividade4/screens/auth/login_screen.dart';
 import 'package:atividade4/screens/user/user_screen.dart';
 import 'package:atividade4/shared/themes/theme_provider.dart';
 import 'package:atividade4/shared/utils/shared_preferences.dart';
+import 'package:atividade4/screens/auth/forgot_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'Modules/splash_screen.dart';
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
         '/register': (context) => RegisterScreen(),
         '/home': (context) => HomeScreen(),
         '/user': (context) => UserScreen(),
+        '/forgot-password': (context) => ForgotPasswordScreen(),
       },
     );
   }

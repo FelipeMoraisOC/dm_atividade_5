@@ -23,6 +23,32 @@ class AuthController {
     return user != null;
   }
 
+  Future<void> resetPassword(context, String email, String newPassword) async {
+  try {
+    // Verifica se o email existe
+    final userExists = await checkEmailExists(email);
+    if (!userExists) {
+      CustomSnackBar.show(context, 'E-mail não encontrado', fail: true);
+      return;
+    }
+
+    // Atualiza a senha do usuário
+    final success = await UserDao.updateUserPassword(email, newPassword);
+    
+    if (success) {
+      CustomSnackBar.show(context, 'Senha redefinida com sucesso!');
+      // Aguarda um pouco para mostrar a mensagem e depois navega para login
+      Future.delayed(Duration(seconds: 1), () {
+        Navigator.pushReplacementNamed(context, '/login');
+      });
+    } else {
+      CustomSnackBar.show(context, 'Erro ao redefinir senha', fail: true);
+    }
+  } catch (e) {
+    CustomSnackBar.show(context, 'Erro ao redefinir senha', fail: true);
+  }
+}
+
   //Login usuário
   Future<void> loginUser(context, String email, String password) async {
     final user = await UserDao.getUserByEmail(email);

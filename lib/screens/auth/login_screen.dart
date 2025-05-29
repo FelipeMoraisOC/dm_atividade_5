@@ -90,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     TextButton(
                       onPressed: () {
-                        // TODO: ação de recuperação de senha
+                        Navigator.pushNamed(context, '/forgot-password');
                       },
                       child: const Text('Esqueci minha senha'),
                     ),
